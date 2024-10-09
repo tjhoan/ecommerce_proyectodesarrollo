@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="../../public/css/dashboard.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </head>
+  <body>
+    <!-- menu-dashboard -->
+    <div class="menu-dashboard" id="menuDashboard">
+      <div class="top-menu">
+        <div class="logo">
+          <img src="https://cdn-icons-png.flaticon.com/128/1721/1721923.png" alt="" />
+          <span>Urban Street Admin</span>
+        </div>
+        <div class="toggle" onclick="toggleMenu()">
+          <i class="fa fa-bars"></i>
+        </div>
+      </div>
+      <div class="menu">
+        <div class="enlace" onclick="irAPagina_indice()">
+          <i class="fa fa-list"></i>
+          <span>Menú</span>
+        </div>
+        <div class="enlace" onclick="toggleCategories()">
+          <i class="fa fa-th-large"></i>
+          <span>Categoría</span>
+        </div>
+        <div class="enlace" onclick="toggleProductos()">
+          <i class="fa fa-shopping-cart"></i>
+          <span>Producto</span>
+        </div>
+        <div class="enlace" onclick="toggleCrearAdmin()">
+          <img src="/public/icon/usuario.png" alt="usuario.png" style="width: 20px; height: 20px; margin-right: 8px" />
+          <span>Crear Admin</span>
+        </div>
+      </div>
+    </div>
+    <!-- categorias -->
+    <div class="categorias" id="categorias" style="display: none">
+      <button class="btn-agregar" onclick="openModal('categoriaModal')">Agregar Categoría</button>
+      <table id="tablaCategorias">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Subcategorías</th>
+            <th>Eliminar</th>
+          </tr>
+        </thead>
+        <tbody id="categoriaListaTabla">
+          <% categories.forEach(item => { %>
+          <tr>
+            <td><%= item.name %></td>
+            <td><%= item.subcategories %></td>
+            <td>
+              <a href="/admin/category/delete/<%= item._id %>">
+                <img src="/public/icon/borrar.png" alt="icon-delete" class="btn-edit_delete" />
+              </a>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+    <form class="modal" id="categoriaModal" action="/saveCategory" method="post">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('categoriaModal')">&times;</span>
+        <h2>Agregar Categoría</h2>
+        <input type="text" name="name" placeholder="Nombre Categoría" required />
+        <input type="text" name="subcategories" placeholder="Subcategorías separadas por comas" required />
+        <button type="submit">Agregar</button>
+      </div>
+    </form>
+    <!-- productos -->
+    <div class="productos" id="productos" style="display: none">
+      <button class="btn-agregar" onclick="openModal('productoModal')">Agregar Producto</button>
+      <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Buscar productos..." />
+      <table id="tablaProductos">
+        <thead>
+          <tr>
+            <th>Imagenes</th>
+            <th>Nombre</th>
+            <th>Categoría</th>
+            <th>Subcategoría</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Marca</th>
+            <th>Descripción/ Eliminar</th>
+          </tr>
+        </thead>
+        <tbody id="productoListaTabla">
+          <% products.forEach(item => { %>
+          <tr>
+            <td>
+              <div class="image-container">
+                <% item.imagePaths.forEach(image => { %>
+                <img src="<%= image.path %>" alt="image_product" class="product-image" onmouseover="showLargeImage(event, '<%= image.path %>')" onmouseout="hideLargeImage()" />
+                <% }); %>
+              </div>
+            </td>
+            <td><%= item.name %></td>
+            <td><%= item.category.name %></td>
+            <td><%= item.category.subcategories %></td>
+            <td><%= item.price %></td>
+            <td><%= item.quantity %></td>
+            <td><%= item.brand %></td>
+            <td class="description_btn">
+              <span><%= item.description %></span>
+              <div class="icons">
+                <a href="/admin/product/delete/<%= item._id %>">
+                  <img src="/public/icon/borrar.png" alt="icon-delete" class="btn-edit_delete" />
+                </a>
+              </div>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+      <div id="largeImageContainer" class="large-image-container">
+        <img id="largeImage" src="" alt="large_image" />
+      </div>
+    </div>
+    <form class="modal" id="productoModal" action="/saveProduct" method="post" enctype="multipart/form-data">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('productoModal')">&times;</span>
+        <h2>Agregar Producto</h2>
+        <p style="margin: 0;">Cantidad Máxima 5 y Mínima 3 Imágenes</p>
+        <input type="file" name="images" multiple />
+        <input type="text" name="name_product" placeholder="Nombre" />
+        <input type="text" name="description" placeholder="Descripción" />
+        <select name="category" id="categorySelect">
+          <% categories.forEach(item => { %>
+          <option value="<%= item._id %> - <%= item.subcategories %>"><%= item.name %> - <%= item.subcategories %></option>
+          <% }) %>
+        </select>
+        <input type="number" name="price" placeholder="Precio" />
+        <input type="number" name="quantity" placeholder="Cantidad" />
+        <input type="text" name="brand" placeholder="Marca" />
+        <button type="submit">Agregar</button>
+      </div>
+    </form>
+    <!-- Crear Admin -->
+    <form class="modal" id="adminModal" action="/saveAdmin" method="post" style="display: none">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('adminModal')">&times;</span>
+        <h2>Agregar Admin</h2>
+        <input type="text" name="name" placeholder="Nombre" required />
+        <input type="password" name="password" placeholder="Contraseña" required />
+        <button type="submit">Agregar</button>
+      </div>
+    </form>
+    <script>
+      function irAPagina_indice() {
+        window.location.href = "/";
+      }
+
+      function showLargeImage(event, src) {
+        var largeImageContainer = document.getElementById("largeImageContainer");
+        var largeImage = document.getElementById("largeImage");
+
+        largeImage.src = src;
+        largeImageContainer.style.display = "block";
+        largeImageContainer.style.top = event.pageY + "px";
+        largeImageContainer.style.left = event.pageX + "px";
+      }
+
+      function hideLargeImage() {
+        var largeImageContainer = document.getElementById("largeImageContainer");
+        largeImageContainer.style.display = "none";
+      }
+
+      // Función para abrir el modal
+      function openModal(modalId) {
+        document.getElementById(modalId).style.display = "block";
+      }
+
+      // Función para cerrar el modal
+      function closeModal(modalId) {
+        document.getElementById(modalId).style.display = "none";
+      }
+
+      // Función para mostrar y ocultar el menú
+      function toggleMenu() {
+        var menu = document.getElementById("menuDashboard");
+        menu.classList.toggle("closed");
+      }
+
+      // Función para mostrar/ocultar productos
+      function toggleProductos() {
+        var productos = document.getElementById("productos");
+        var categorias = document.getElementById("categorias");
+        var adminModal = document.getElementById("adminModal");
+
+        productos.style.display = productos.style.display === "none" ? "block" : "none";
+        categorias.style.display = "none";
+        adminModal.style.display = "none";
+      }
+
+      // Función para mostrar/ocultar categorías
+      function toggleCategories() {
+        var categorias = document.getElementById("categorias");
+        var productos = document.getElementById("productos");
+        var adminModal = document.getElementById("adminModal");
+
+        categorias.style.display = categorias.style.display === "none" ? "block" : "none";
+        productos.style.display = "none";
+        adminModal.style.display = "none";
+      }
+
+      // Función para mostrar/ocultar crearAdmin
+      function toggleCrearAdmin() {
+        var adminModal = document.getElementById("adminModal");
+        var productos = document.getElementById("productos");
+        var categorias = document.getElementById("categorias");
+
+        adminModal.style.display = adminModal.style.display === "none" ? "block" : "none";
+        productos.style.display = "none";
+        categorias.style.display = "none";
+      }
+
+      function searchTable() {
+        // Obtiene el valor de la entrada de búsqueda
+        var input = document.getElementById("searchInput");
+        var filter = input.value.toLowerCase();
+
+        // Obtiene la tabla y sus filas
+        var table = document.getElementById("tablaProductos");
+        var tr = table.getElementsByTagName("tr");
+
+        // Recorre todas las filas de la tabla y oculta aquellas que no coinciden con la búsqueda
+        for (var i = 1; i < tr.length; i++) {
+          var tdArray = tr[i].getElementsByTagName("td");
+          var displayRow = false;
+
+          for (var j = 0; j < tdArray.length; j++) {
+            var td = tdArray[j];
+            if (td) {
+              if (td.innerHTML.toLowerCase().indexOf(filter) > -1) {
+                displayRow = true;
+                break;
+              }
+            }
+          }
+
+          if (displayRow) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
+
+      // Función para eliminar una fila
+      function eliminarFila(button) {
+        var fila = button.parentNode.parentNode;
+        fila.parentNode.removeChild(fila);
+      }
+    </script>
+    <% if (typeof alert !=='undefined' ) { %> <% console.log(alert) %>
+    <script>
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "<%= alert %>",
+      });
+    </script>
+    <% } %>
+  </body>
+</html>

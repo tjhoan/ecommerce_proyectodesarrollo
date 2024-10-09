@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Factura / URBANSATREET</title>
+    <link rel="stylesheet" href="/public/css/factura.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Encabezado de la factura -->
+      <div class="header">
+        <a href="/">
+          <img src="/public/logo/logo_urbanStreet.jpg" alt="Logo" />
+        </a>
+        <div class="business-info">
+          <h1>URBANSTREET</h1>
+          <strong>Datos Almacén</strong><br />
+          Carrera 23 # 14-55 / La Unión, Valle del Cauca<br />
+          urban.street@gmail.com<br />
+          3298784556<br />
+          NIT 4587963<br />
+        </div>
+      </div>
+      <div class="line"></div>
+      <!-- Detalles de la factura y del cliente -->
+      <div class="details">
+        <div class="client">
+          <h2>Factura emitida para:</h2>
+          <address>
+            <strong>Datos Cliente</strong><br />
+            <%= customer.first_name %> <%= customer.second_name %> <%= customer.last_name %><br />
+            <%= customer.address %><br />
+            <%= customer.email %><br />
+            C.C <%= customer.cedula %><br />
+            <%= payment.banc %><br />
+            <%= payment.account_number %><br />
+          </address>
+        </div>
+      </div>
+      <!-- Tabla de productos facturados -->
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Producto</th>
+            <th>Precio Unidad</th>
+            <th>Cantidad</th>
+            <th>Precio Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% cart.products.forEach((item, index) => { %>
+          <tr>
+            <td><%= index + 1 %></td>
+            <td><%= item.product.name %></td>
+            <td>$<%= item.product.price %></td>
+            <td><%= item.quantity %></td>
+            <td>$<%= item.product.price * item.quantity %></td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+      <div class="line-below-table"></div>
+      <div class="totals">
+        <div class="invoice-note">
+          <h2>Nota Importante:</h2>
+          <p>Esta factura es muy importante en el momento de reclamar su pedido o requerir un reclamo, asegúrese de guardarla. ¡Gracias por su compra!</p>
+        </div>
+        <!-- Totales de la factura -->
+        <div class="summary">
+          <div class="row">
+            <div><b>Total:</b></div>
+            <div>$<%= cart.products.reduce((sum, item) => sum + item.product.price * item.quantity, 0) %></div>
+          </div>
+          <div class="row">
+            <div><b>IVA:</b></div>
+            <div>20 %</div>
+          </div>
+          <div class="row">
+            <div><b>Total a Pagar:</b></div>
+            <div>$<%= cart.products.reduce((sum, item) => sum + item.product.price * item.quantity, 0) * 1.2 %></div>
+          </div>
+        </div>
+      </div>
+      <a href="/generate-invoice-pdf/<%= customer.login_customer_id %>" target="_blank" style="text-decoration: none;">
+        <button>Imprimir Factura</button>
+      </a>
+      <a href="/" style="text-decoration: none;">
+        <button>Regresar a la página principal</button>
+      </a>
+    </div>
+  </body>
+</html>

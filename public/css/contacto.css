@@ -1,0 +1,89 @@
+/* Estilos para el cuerpo de la página */
+body {
+  font-family: Arial, sans-serif; /* Fuente principal de la página */
+  margin: auto; /* Centra el contenido horizontalmente */
+  padding: 0; /* Elimina el padding por defecto */
+  background-color: #ffffff; /* Color de fondo blanco */
+}
+
+/* Estilos para el contenedor principal de contacto */
+.contact-container {
+  max-width: 800px; /* Ancho máximo del contenedor */
+  margin: 0 auto; /* Centra el contenedor horizontalmente */
+  padding: 20px; /* Padding interno de 20px */
+  text-align: center; /* Centra el texto */
+}
+
+/* Estilos para el encabezado principal */
+h1 {
+  font-family: Freestyle Script; /* Fuente personalizada */
+  font-size: 80px; /* Tamaño de fuente grande */
+  width: 100%; /* Ancho del encabezado */
+  margin-top: -25px; /* Margen superior negativo para ajustar la posición */
+  height: 100px; /* Altura del encabezado */
+  background-color: rgb(0, 0, 0); /* Fondo negro */
+  color: greenyellow; /* Color de texto verde amarillento */
+  padding-top: 24.5px; /* Padding superior */
+  text-align: center; /* Centra el texto */
+}
+
+/* Estilos para el subtítulo */
+h2 {
+  font-family: "Times New Roman", Times, serif; /* Fuente personalizada */
+  font-size: 20px; /* Tamaño de fuente */
+  text-align: center; /* Centra el texto */
+  margin-right: 300px; /* Margen derecho */
+  margin-left: 300px; /* Margen izquierdo */
+  margin-top: 120px; /* Margen superior */
+}
+
+/* Estilos para los enlaces de contacto */
+.contact-links {
+  display: flex; /* Usa flexbox para los enlaces */
+  justify-content: center; /* Centra los elementos dentro del contenedor */
+  margin-top: 20px; /* Margen superior */
+}
+
+/* Estilos individuales para cada enlace de contacto */
+.contact-links a {
+  display: inline-block; /* Mostrar como bloque en línea */
+  text-decoration: none; /* Sin subrayado */
+  color: #fff; /* Color de texto blanco */
+  background-color: #ffffff; /* Fondo blanco */
+  padding: 10px 20px; /* Padding interno */
+  margin: 0 10px; /* Márgenes laterales */
+  border-radius: 5px; /* Bordes redondeados */
+  transition: background-color 0.3s ease; /* Transición suave para cambios de color de fondo */
+}
+
+/* Estilos para el estado hover de los enlaces */
+.contact-links a:hover {
+  background-color: #ffffff; /* Cambia el fondo al pasar el ratón (no cambia en este caso) */
+}
+
+/* Estilos específicos para el botón de WhatsApp */
+.whatsapp {
+  background-color: #25d366; /* Fondo verde de WhatsApp */
+}
+
+/* Estilos específicos para el botón de Facebook */
+.facebook {
+  background-color: #3b5998; /* Fondo azul de Facebook */
+}
+
+/* Estilos específicos para el botón de Instagram */
+.instagram {
+  background-color: #c13584; /* Fondo rosa de Instagram */
+}
+
+/* Estilos para el icono del carrito */
+.icon-cart3 {
+  width: 45px; /* Ancho del icono */
+  height: 45px; /* Altura del icono */
+  stroke: greenyellow; /* Color de trazo verde amarillento */
+  margin-top: -128px; /* Margen superior negativo */
+  margin-left: 25px; /* Margen izquierdo */
+  margin-bottom: 1.8%; /* Margen inferior */
+  position: fixed; /* Posición fija */
+  z-index: 1000; /* Nivel de apilamiento alto para estar encima de otros elementos */
+}

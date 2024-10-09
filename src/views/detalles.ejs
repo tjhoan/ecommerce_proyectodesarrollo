@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Urban Street</title>
+    <link rel="stylesheet" href="/public/css/detalles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <header>
+      <nav class="top-nav">
+        <ul>
+          <li><a class="titulo" href="/">URBAN STREET</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <h3 class="titulo2"><%= product.name %></h3>
+      <div class="carousel">
+        <button class="prev"><</button>
+        <div class="carousel-track-container">
+          <div class="carousel-track">
+            <% product.imagePaths.forEach(image => { %>
+              <div class="carousel-slide">
+                <img src="<%= image.path %>" alt="Imagen del producto">
+              </div>
+            <% }) %>
+          </div>
+        </div>
+        <button class="next">></button>
+      </div>
+      <h3 class="titulo3">Características</h3>
+      <section class="features">
+        <div class="left-column">
+          <div class="feature-row">
+            <label for="price">Precio:</label>
+            <input type="text" id="price" value="<%= product.price %>" readonly />
+          </div>
+          <div class="feature-row">
+            <label for="available-quantity">Cantidades disponibles:</label>
+            <input type="text" id="available-quantity" value="<%= product.quantity %>" readonly />
+          </div>
+          <div class="feature-row">
+            <label for="description">Descripción:</label>
+            <textarea id="description" readonly><%= product.description %></textarea>
+          </div>
+        </div>
+      </section>
+      <div class="button-row">
+        <a href="/go-to-main" class="action-btn2" id="go-to-main">Regresar al main</a>
+      </div>
+    </main>    
+    <footer>
+      <div class="footer-content">
+        <a href="https://www.facebook.com/tupagina"><i class="fab fa-facebook"></i></a>
+        <a href="https://wa.me/+573146218858?text"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://www.instagram.com/urbanstreet737?igsh=MWJ3cWZmZ29sdDczdA=="><i class="fab fa-instagram"></i></a>
+        <p>
+          Dirección: Carrera 23 # 14-55 / La Unión, Valle del Cauca<br />Numero: +57 3298784556<br />Correo electrónico: urban.street@gmail.com<br />&copy; J.J.L.S - 2024 Tienda Online. Todos los
+          derechos reservados.
+        </p>
+      </div>
+    </footer>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const slides = document.querySelectorAll(".carousel-slide");
+        const prevButton = document.querySelector(".prev");
+        const nextButton = document.querySelector(".next");
+        let currentSlide = 2;
+
+        function updateCarousel() {
+          const track = document.querySelector(".carousel-track");
+          const slideWidth = slides[currentSlide].clientWidth;
+          const offset = -(slideWidth + 20) * currentSlide + (document.querySelector(".carousel-track-container").clientWidth - slideWidth) / 2;
+          track.style.transform = `translateX(${offset}px)`;
+
+          slides.forEach((slide, index) => {
+            if (index === currentSlide) {
+              slide.classList.add("current");
+            } else {
+              slide.classList.remove("current");
+            }
+          });
+        }
+
+        nextButton.addEventListener("click", () => {
+          currentSlide = (currentSlide + 1) % slides.length;
+          updateCarousel();
+        });
+
+        prevButton.addEventListener("click", () => {
+          currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+          updateCarousel();
+        });
+
+        updateCarousel();
+
+        // Funcionalidad para los botones + y -
+        const decreaseButton = document.getElementById("decrease");
+        const increaseButton = document.getElementById("increase");
+        const quantityInput = document.getElementById("quantity");
+
+        decreaseButton.addEventListener("click", () => {
+          let quantity = parseInt(quantityInput.value, 10);
+          if (quantity > 0) {
+            quantity -= 1;
+            quantityInput.value = quantity;
+          }
+        });
+
+        increaseButton.addEventListener("click", () => {
+          let quantity = parseInt(quantityInput.value, 10);
+          quantity += 1;
+          quantityInput.value = quantity;
+        });
+      });
+    </script>
+  </body>
+</html>

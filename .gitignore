@@ -1,0 +1,7 @@
+.vscode
+node_modules
+.env
+archive
+public/img
+public/imgIndex
+public/fotosRopa

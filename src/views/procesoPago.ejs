@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Urban Street</title>
+    <link rel="stylesheet" href="/public/css/procesoPago.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <header>
+      <nav class="top-nav">
+        <ul>
+          <li><a class="titulo" href="/">URBAN STREET</a></li>
+        </ul>
+      </nav>
+      <!-- Ventana emergente para el QRBancolombia -->
+      <div id="QRBancolombiaModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2>QR Bancolombia a la mano</h2>
+          <div class="cart-item">
+            <div class="product-info2">
+              <img src="/public/qr/QRBancolombiaALaMano.jpg" class="product-image-cart2" />
+              <p class="product-name2">urbanstreet</p>
+              <p class="product-price2">03204657890</p>
+              <p class="contador">Tiene 10 segundos para escanear el QR</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Ventana emergente para el QRDavivienda -->
+      <div id="QRDaviviendaModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2>QR Daviplata</h2>
+          <div class="cart-item">
+            <div class="product-info2">
+              <img src="/public/qr/QRDaviPlata.jpg" class="product-image-cart2" />
+              <p class="product-name2">URBAN STREET</p>
+              <p class="product-price2">3204657890</p>
+              <p class="contador">Tiene 10 segundos para escanear el QR</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main>
+      <h1>CANCELACIÓN DE COMPRA</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>PRODUCTO</th>
+            <th>PRECIO</th>
+            <th>CANTIDAD</th>
+            <th>SUBTOTAL</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% products.forEach(product => { %>
+          <tr>
+            <td><%= product.name %></td>
+            <td>$ <%= product.price.toLocaleString() %></td>
+            <td><%= product.quantity %></td>
+            <td>$ <%= product.subtotal.toLocaleString() %></td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+      <div class="total-to-pay">
+        <h2 class="tittle-total">Total a Pagar: <span class="total-amount">$ <%= totalAmount.toLocaleString() %></span></h2>
+      </div>
+      <div class="payment-options">
+        <button id="QRBtnBanc" class="payment-option-btn1" data-payment="bancolombia">Bancolombia a la mano</button>
+        <button id="QRBtnDavi" class="payment-option-btn2" data-payment="daviplata">Daviplata</button>
+        <a href="/" class="payment-option-btn4">Main</a>
+      </div>
+    </main>
+    <footer>
+      <div class="footer-content">
+        <a href="https://www.facebook.com/tupagina"><i class="fab fa-facebook"></i></a>
+        <a href="https://wa.me/+573146218858?text"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://www.instagram.com/urbanstreet737?igsh=MWJ3cWZmZ29sdDczdA=="><i class="fab fa-instagram"></i></a>
+        <p>
+          Dirección: Carrera 23 # 14-55 / La Unión, Valle del Cauca<br />Numero: +57 3298784556<br />Correo electrónico: urban.street@gmail.com<br />&copy; J.J.L.S - 2024 Tienda Online. Todos los
+          derechos reservados.
+        </p>
+      </div>
+    </footer>
+    <script>
+      var closeBtns = document.getElementsByClassName("close");
+      var paymentButtons = document.querySelectorAll("[data-payment]");
+      var navigating = false;
+      var navigationTimer;
+      const tiempoInicial = 10; // Tiempo inicial para el contador
+      let tiempoRestante = tiempoInicial; // Tiempo restante del contador
+      let intervalo;
+      let pElemento;
+
+      // Muestra el modal
+      function showModal(modalId) {
+        document.getElementById(modalId).style.display = "block";
+      }
+
+      // Oculta el modal
+      function hideModal(modalId) {
+        document.getElementById(modalId).style.display = "none";
+      }
+
+      // Inicia la navegación
+      function startNavigation(customerId, paymentMethod) {
+        navigating = true;
+        navigationTimer = setTimeout(function () {
+          if (navigating) {
+            window.location.href = `/factura/${customerId}?method=${paymentMethod}`;
+          }
+        }, 10000);
+      }
+
+      // Cancela la navegación
+      function cancelNavigation() {
+        navigating = false;
+        clearTimeout(navigationTimer);
+      }
+
+      // Reinicia el contador
+      function resetContador() {
+        tiempoRestante = tiempoInicial;
+        if (pElemento) {
+          pElemento.textContent = `Tiene ${tiempoRestante} segundos para escanear el QR`;
+        }
+
+        clearInterval(intervalo);
+        intervalo = setInterval(() => {
+          tiempoRestante--;
+          if (pElemento) {
+            if (tiempoRestante > 0) {
+              pElemento.textContent = `Tiene ${tiempoRestante} segundos para escanear el QR`;
+            } else {
+              clearInterval(intervalo);
+              pElemento.textContent = `¡Tiempo agotado para el QR!`;
+            }
+          }
+        }, 1000); // Ejecuta cada 1000 ms (1 segundo)
+      }
+
+      // Maneja el clic en los botones de pago
+      paymentButtons.forEach((button) => {
+        button.addEventListener("click", function (e) {
+          e.preventDefault();
+          var paymentMethod = this.getAttribute("data-payment");
+          var modalId = paymentMethod === "bancolombia" ? "QRBancolombiaModal" : "QRDaviviendaModal";
+          showModal(modalId);
+          startNavigation("<%= customerId %>", paymentMethod);
+
+          // Selecciona el elemento del contador para el modal activo
+          pElemento = document.querySelector(`#${modalId} .contador`);
+          resetContador(); // Reinicia el contador al abrir un modal
+        });
+      });
+
+      // Maneja el clic en los botones de cerrar (x)
+      for (var i = 0; i < closeBtns.length; i++) {
+        closeBtns[i].onclick = function () {
+          const modalId = this.closest(".modal").id;
+          hideModal(modalId);
+          cancelNavigation();
+          resetContador(); // Reinicia el contador al cerrar un modal
+        };
+      }
+
+      // Cierra el modal si se hace clic fuera de él
+      window.onclick = function (event) {
+        if (event.target.classList.contains("modal")) {
+          const modalId = event.target.id;
+          hideModal(modalId);
+          cancelNavigation();
+          resetContador(); // Reinicia el contador al cerrar un modal
+        }
+      };
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // Inicializa el contador
+        pElemento = document.querySelector(".contador");
+        resetContador(); // Inicializa el contador al cargar el DOM
+      });
+    </script>
+  </body>
+</html>

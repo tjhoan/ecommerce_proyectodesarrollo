@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tienda Online / Formulario de Pago</title>
+    <link rel="stylesheet" href="/public/css/formulario.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </head>
+  <body>
+    <div class="container">
+      <header>Formulario Cliente Pago</header>
+      <form action="/paymentForm" id="myForm" method="post">
+        <input type="hidden" name="customer_id" value="<%= customerId %>">
+        <div class="form-first">
+          <div class="details personal">
+            <span class="title">Datos Personales</span>
+            <div class="fields">
+              <div class="input-field">
+                <label>Primer Nombre</label>
+                <input type="text" name="first_name" placeholder="Ingrese su primer nombre" required>
+              </div>
+              <div class="input-field">
+                  <label>Segundo Nombre</label>
+                  <input type="text" name="second_name" placeholder="Ingrese su segundo nombre">
+              </div>
+              <div class="input-field">
+                  <label>Apellidos</label>
+                  <input type="text" name="last_name" placeholder="Ingrese sus apellidos" required>
+              </div>
+              <div class="input-field">
+                <label>Cédula ciudadana</label>
+                <input type="number" name="cedula" placeholder="Ingresa tu cédula ciudadana" required />
+              </div>
+              <div class="input-field">
+                <label>Correo Electrónico</label>
+                <input type="email" name="email" placeholder="Ingresa tu correo electrónico" required />
+              </div>
+              <div class="input-field">
+                <label>Número Celular</label>
+                <input type="number" name="phone" placeholder="Ingresa tu celular" required />
+              </div>
+              <div class="input-field">
+                <label>Género</label>
+                <input type="text" name="genre" placeholder="Masculino/Femenino/Otros" required />
+              </div>
+            </div>
+          </div>
+          <div class="details ID">
+            <span class="title">Datos Dirección Envio</span>
+            <div class="fields">
+              <div class="input-field">
+                <label>País</label>
+                <input type="text" name="country" placeholder="Ingresa tu país" required />
+              </div>
+              <div class="input-field">
+                <label>Ciudad</label>
+                <input type="text" name="city" placeholder="Ingresa tu ciudad" required />
+              </div>
+              <div class="input-field">
+                <label>Barrio</label>
+                <input type="text" name="neighborhood" placeholder="Ingresa tu barrio" required />
+              </div>
+              <div class="input-field">
+                <label>Dirección Envio</label>
+                <input type="text" name="shipping_address" placeholder="Ingresa tu dirección de envio (Apto, Manz, Etc)" required />
+              </div>
+              <div class="input-field">
+                <label>Ubicación Geográfica</label>
+                <input type="text" name="geo_location" placeholder="Ingresa tu ubicación" required />
+              </div>
+              <div class="input-field">
+                <label>Código Postal</label>
+                <input type="number" name="postal_code" placeholder="Ingresa tu código postal" required />
+              </div>
+            </div>
+          </div>
+          <div class="details metodo-pago">
+            <span class="title">Metodología de Pago</span>
+            <div class="fields">
+              <div class="input-field">
+                <label>Banco</label>
+                <select id="banco" name="banc">
+                  <option value="bancolombia">Bancolombia</option>
+                  <option value="davivienda">Davivienda</option>
+                </select>
+              </div>
+              <div class="input-field">
+                <label>Tipo de Pago</label>
+                <select id="tipoPago" name="payment_type">
+                  <option value="bancolombiaALaMano">Bancolombia a la mano</option>
+                  <option value="daviplata">DaviPlata</option>
+                </select>
+              </div>
+              <div class="input-field">
+                <label>Número de Cuenta</label>
+                <input type="text" name="account_number" placeholder="Ingresa número de cuenta" required />
+              </div>
+            </div>
+            <div class="buttons">
+              <a href="/" class="backBtn1">
+                <img class="navigator" src="/public/icon/proximo.png" />
+                <span class="btnText">Regresar al indice</span>
+              </a>
+              <button class="nextBtn1" type="submit">
+                <span class="btnText">Continuar</span>
+                <img class="navigator" src="/public/icon/proximo.png" />
+              </button>
+            </div>
+          </div>          
+      </form>
+    </div>
+    <% if (typeof alert !=='undefined' ) { %> <% console.log(alert) %>
+      <script>
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "<%= alert %>",
+        });
+      </script>
+    <% } %>
+  </body>
+</html>

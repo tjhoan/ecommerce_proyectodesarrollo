@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UrbanStreet</title>
+    <link rel="stylesheet" href="/public/css/index.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="/">Iniciar</a>
+        <a href="/contacto">Contactos</a>
+      </nav>
+    </header>
+    <div class="carousel">
+      <div class="list">
+        <div class="item">
+          <img src="/public/imgIndex/oe1.jpg" />
+          <div class="content">
+            <div class="author">URBANSTREET</div>
+            <div class="title">Dale el Mejor Regalo a Papá</div>
+            <div class="topic">35% Descuento</div>
+            <div class="des">Observa tus mejores prendas a la moda, como solo UrbanStreet te trae solo para tí.</div>
+            <div class="buttons">
+              <button onclick="main()" type="button">Entrar</button>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="/public/imgIndex/oe2.jpg" />
+          <div class="content">
+            <div class="author">URBANSTREET</div>
+            <div class="title">Todo a tu Gusto</div>
+            <div class="topic">10% Descuento</div>
+            <div class="des">Observa tus mejores prendas a la moda, como solo UrbanStreet te trae solo para tí.</div>
+            <div class="buttons">
+              <button onclick="main()" type="button">Entrar</button>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="/public/imgIndex/oe3.jpg" />
+          <div class="content">
+            <div class="author">URBANSTREET</div>
+            <div class="title">Siempre a la Moda Urbana</div>
+            <div class="topic">25% Descuento</div>
+            <div class="des">Observa tus mejores prendas a la moda, como solo UrbanStreet te trae solo para tí.</div>
+            <div class="buttons">
+              <button onclick="main()" type="button">Entrar</button>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="/public/imgIndex/oe4.jpg" />
+          <div class="content">
+            <div class="author">URBANSTREET</div>
+            <div class="title">Todo para Dama y Caballero</div>
+            <div class="topic">20% Descuento</div>
+            <div class="des">Observa tus mejores prendas a la moda, como solo UrbanStreet te trae solo para tí.</div>
+            <div class="buttons">
+              <button onclick="main()" type="button">Entrar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="thumbnail">
+        <div class="item">
+          <img src="/public/imgIndex/oe2.jpg" />
+          <div class="content">
+            <div class="title">Ropa Dama</div>
+            <div class="des">Blusas...</div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="/public/imgIndex/oe3.jpg" />
+          <div class="content">
+            <div class="title">Moda Dama</div>
+            <div class="des">Vestidos...</div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="/public/imgIndex/oe4.jpg" />
+          <div class="content">
+            <div class="title">Moda en Pareja</div>
+            <div class="des">Conjuntos...</div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="/public/imgIndex/oe1.jpg" />
+          <div class="content">
+            <div class="title">Moda Caballero</div>
+            <div class="des">Camisas...</div>
+          </div>
+        </div>
+      </div>
+      <div class="arrows">
+        <button id="prev"><</button>
+        <button id="next">></button>
+      </div>
+      <div class="time"></div>
+    </div>
+    <script>
+      let nextDom = document.getElementById("next");
+      let prevDom = document.getElementById("prev");
+      let carouselDom = document.querySelector(".carousel");
+      let listItemDom = document.querySelector(".carousel .list");
+      let thumbnailDom = document.querySelector(".carousel .thumbnail");
+
+      nextDom.onclick = function () {
+        showSlider("next");
+      };
+      prevDom.onclick = function () {
+        showSlider("prev");
+      };
+      let timeRunning = 3000;
+      let timeAutoNext = 7000;
+      let runTimeOut;
+      let runAutoRun = setTimeout(() => {
+        nextDom.click();
+      }, timeAutoNext);
+      function showSlider(type) {
+        let itemSlider = document.querySelectorAll(".carousel .list .item");
+        let itemThumbnail = document.querySelectorAll(".carousel .thumbnail .item");
+
+        if (type === "next") {
+          listItemDom.appendChild(itemSlider[0]);
+          thumbnailDom.appendChild(itemThumbnail[0]);
+          carouselDom.classList.add("next");
+        } else {
+          let positionLastItem = itemSlider.length - 1;
+          listItemDom.prepend(itemSlider[positionLastItem]);
+          thumbnailDom.prepend(itemThumbnail[positionLastItem]);
+          carouselDom.classList.add("prev");
+        }
+
+        clearTimeout(runTimeOut);
+        runTimeOut = setTimeout(() => {
+          carouselDom.classList.remove("next");
+          carouselDom.classList.remove("prev");
+        }, timeRunning);
+
+        clearTimeout(runAutoRun);
+        runAutoRun = setTimeout(() => {
+          nextDom.click();
+        }, timeAutoNext);
+      }
+
+      function main() {
+        window.location.href = "/";
+      }
+    </script>
+  </body>
+</html>

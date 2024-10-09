@@ -1,0 +1,147 @@
+/* Estilo global del cuerpo */
+body {
+  background: #000000;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Contenedor principal */
+.container {
+  width: 80%;
+  margin: 20px auto;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  padding: 20px;
+}
+
+/* Encabezado de la factura */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+}
+
+.header img {
+  width: 50%;
+}
+
+.header .business-info {
+  text-align: right;
+}
+
+.header .business-info h1 {
+  font-size: 36px;
+  margin: 0;
+}
+
+/* Línea divisoria */
+.line {
+  border-bottom: 2px solid #00ad00;
+  margin-bottom: 20px;
+}
+
+/* Detalles de la factura */
+.details {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.details .client {
+  width: 45%;
+}
+
+.details .invoice-info {
+  width: 45%;
+  text-align: right;
+}
+
+.details address,
+.details .invoice-info div {
+  margin-bottom: 10px;
+}
+
+/* Tabla de productos */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table,
+th,
+td {
+  border: 1px solid #000000;
+}
+
+th,
+td {
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #9e9e9e;
+}
+
+/* Totales de la factura */
+.totals {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 10px;
+}
+
+.totals .invoice-note {
+  width: 60%;
+  margin-top: 80px;
+}
+
+.totals .summary {
+  width: 30%;
+  text-align: right;
+}
+
+.summary .row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.summary .row div {
+  width: 50%;
+}
+
+/* Línea divisoria debajo de la tabla */
+.line-below-table {
+  border-top: 2px solid #265df2;
+  margin: 20px 0;
+  width: 50%;
+  margin-left: auto;
+}
+
+/* Estilos para los botones */
+button {
+  color: #fff;
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  background-color: #00ad00;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 50px;
+  transition: all 0.3s linear;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+button:hover {
+  background-color: #265df2;
+}
+
+.indice:hover {
+  background-color: red;
+}

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Urban Street</title>
+    <link rel="stylesheet" href="/public/css/mainStyles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <header>
+      <nav class="top-nav">
+        <ul>
+          <li><a class="titulo" href="/index">URBAN STREET</a></li>
+          <div class="icon-container">
+            <li>
+              <button id="cartBtn" class="icon-btn">
+                <i class="fas fa-shopping-cart"></i>
+              </button>
+            </li>
+            <li>
+              <button id="userBtn" class="icon-btn">
+                <i class="fas fa-user-plus"></i>
+              </button>
+            </li>
+            <li>
+              <a href="/logout" style="padding: 0">
+                <button class="icon-btn">
+                  <i class="fas fa-sign-out-alt"></i>
+                </button>
+              </a>
+            </li>
+          </div>
+        </ul>
+      </nav>
+      <!-- Ventana emergente para el carrito -->
+      <div id="cartModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2>Contenido del carrito</h2>
+          <div class="cart-items">
+            <% productCart.forEach(item => { %>
+              <div class="cart-item">
+                <img src="<%= item.details.imagePaths[0].path %>" alt="Producto" class="product-image-cart" />
+                <div class="product-info">
+                  <p class="product-name"><%= item.details.name %></p>
+                  <p class="product-price">Precio Unidad: $<%= item.details.price %></p>
+                  <p class="product-quantity">Cantidad: <%= item.quantity %></p>
+                </div>
+                <a href="/delete/productCart/<%= item.details._id %>" class="remove-item">&times;</a>
+              </div>
+            <% }) %>            
+            <div class="btn-cart">
+              <a href="/formulario/<%= customerId %>" class="Finalizar-cart">Finalizar Compra</a>
+              <a href="/" class="Main-cart">Main</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Ventana emergente para el usuario -->
+      <div id="userModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2>LOGIN CLIENTE</h2>
+          <form class="DatosLogin" action="/form-login-cliente" method="post">
+            <label for="NomCliente">Primer Nombre</label>
+            <input type="text" name="first_name" class="input-field" placeholder="Ingrese su nombre" />
+            <label for="CorreoCliente">Correo</label>
+            <input type="email" name="email_customer" class="input-field" placeholder="Ingrese su correo" />
+            <label for="ContrCliente">Cédula</label>
+            <input type="text" name="cedula_customer" class="input-field" placeholder="Ingrese su cédula" />
+            <button class="register-btn" type="submit">Registrar</button>
+            <div id="error-message" class="error-message"></div>
+          </form>
+          <form class="DatosAdmin" action="/form-login-admin" method="post">
+            <h2>LOGIN ADMINISTRADOR</h2>
+            <label for="NomAdmin">Nombre</label>
+            <input type="text" name="admin_name" class="input-field" placeholder="Ingrese su nombre" />
+            <label for="ContrAdmin">Contraseña</label>
+            <input type="password" name="admin_password" class="input-field" placeholder="Ingrese su contraseña" />
+            <button class="Ingresar-btn" type="submit">Ingresar</button>
+          </form>
+        </div>
+      </div>
+      <!-- Barra de navegación de categorías -->
+      <nav class="category-nav">
+        <ul>
+          <% categories.forEach(category => { %>
+          <li class="dropdown">
+            <button class="dropbtn"><%= category.name %></button>
+            <div class="dropdown-content">
+              <% if (Array.isArray(category.subcategories) && category.subcategories.length > 0) { %> <% category.subcategories.forEach(subcategory => { %>
+              <a href="<%= categoryUrls[`${category.name}-${subcategory}`] %>"><%= subcategory %></a>
+              <% }) %> <% } else { %>
+              <p>No hay subcategorías disponibles</p>
+              <% } %>
+            </div>
+          </li>
+          <% }) %>
+        </ul>
+      </nav>
+    </header>
+    <!-- Aquí se muestran los productos -->
+    <main class="product-grid">
+      <% productShow.forEach(product => { %>
+      <div class="product-card">
+        <img src="<%= product.imagePaths[0] ? product.imagePaths[0].path : '/path/to/default-image.jpg' %>" alt="<%= product.name %>" class="product-image" />
+        <h2 class="product-name"><%= product.name %></h2>
+        <p class="product-price">$<%= product.price %></p>
+        <a href="/detalles/<%= product._id %>" class="details-btn">DETALLES</a>
+        <a href="/addCart/<%= product._id %>?customerId=<%= customerId %>" class="add-to-cart-btn">AÑADIR AL CARRITO</a>
+      </div>
+      <% }) %>
+    </main>
+    <footer>
+      <div class="footer-content">
+        <a href="https://www.facebook.com/tupagina"><i class="fab fa-facebook"></i></a>
+        <a href="https://wa.me/+573146218858?text"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://www.instagram.com/urbanstreet737?igsh=MWJ3cWZmZ29sdDczdA=="><i class="fab fa-instagram"></i></a>
+        <p>
+          Dirección: Carrera 23 # 14-55 / La Unión, Valle del Cauca<br />Numero: +57 3298784556<br />Correo electrónico: urban.street@gmail.com<br />&copy; J.J.L.S - 2024 Tienda Online. Todos los
+          derechos reservados.
+        </p>
+      </div>
+    </footer>
+    <script>
+      var cartModal = document.getElementById("cartModal");
+      var userModal = document.getElementById("userModal");
+
+      var cartBtn = document.getElementById("cartBtn");
+      cartBtn.onclick = function () {
+        cartModal.style.display = "block";
+      };
+
+      var userBtn = document.getElementById("userBtn");
+      userBtn.onclick = function () {
+        userModal.style.display = "block";
+      };
+
+      var closeBtns = document.getElementsByClassName("close");
+      for (var i = 0; i < closeBtns.length; i++) {
+        closeBtns[i].onclick = function () {
+          this.parentElement.parentElement.style.display = "none";
+        };
+      }
+
+      window.onclick = function (event) {
+        if (event.target == cartModal) {
+          cartModal.style.display = "none";
+        } else if (event.target == userModal) {
+          userModal.style.display = "none";
+        }
+      };
+    </script>
+    <% if (typeof alert !=='undefined' ) { %> <% console.log(alert) %>
+    <script>
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "<%= alert %>",
+      });
+    </script>
+    <% } %>
+  </body>
+</html>
